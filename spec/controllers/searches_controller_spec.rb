@@ -1,57 +1,81 @@
 require File.dirname(__FILE__) + '/../spec_helper'
  
 describe SearchesController do
-  fixtures :all
-  integrate_views
-  
-  it "index action should render index template" do
-    get :index
-    response.should render_template(:index)
+  before(:each) do
+    @search = mock_model(Search)
   end
   
-  it "show action should render show template" do
-    get :show, :id => Search.first
-    response.should render_template(:show)
+  describe "handling GET index" do
+    before(:each) do
+      @searches = [@search]
+    end
+    
+    def do_get
+      get :index  
+    end
+    
+    it "should find all searches and assign them for the view" do
+      Search.should_receive(:all).and_return(@searches)
+      do_get
+      assigns[:searches].should == @searches
+    end
+    
+    it "should render the index template" do
+      do_get
+      response.should render_template(:index)
+    end
+    
   end
-  
-  it "new action should render new template" do
-    get :new
-    response.should render_template(:new)
+
+  describe "handling GET new" do
+    
+    def do_get
+      get :new
+    end
+    
+    it "should build an empty search and assign it for the view" do
+      Search.should_receive(:new).and_return(@search)
+      do_get
+      assigns[:search].should == @search
+    end
+    
+    it "should render the new template" do
+      do_get
+      response.should render_template(:new)
+    end
   end
-  
-  it "create action should render new template when model is invalid" do
-    Search.any_instance.stubs(:valid?).returns(false)
-    post :create
-    response.should render_template(:new)
-  end
-  
-  it "create action should redirect when model is valid" do
-    Search.any_instance.stubs(:valid?).returns(true)
-    post :create
-    response.should redirect_to(search_url(assigns[:search]))
-  end
-  
-  it "edit action should render edit template" do
-    get :edit, :id => Search.first
-    response.should render_template(:edit)
-  end
-  
-  it "update action should render edit template when model is invalid" do
-    Search.any_instance.stubs(:valid?).returns(false)
-    put :update, :id => Search.first
-    response.should render_template(:edit)
-  end
-  
-  it "update action should redirect when model is valid" do
-    Search.any_instance.stubs(:valid?).returns(true)
-    put :update, :id => Search.first
-    response.should redirect_to(search_url(assigns[:search]))
-  end
-  
-  it "destroy action should destroy model and redirect to index action" do
-    search = Search.first
-    delete :destroy, :id => search
-    response.should redirect_to(searches_url)
-    Search.exists?(search.id).should be_false
+
+  describe "handling POST create" do
+    before(:each) do
+      Search.stub!(:new).and_return(@search)
+    end
+    
+    def post_with_valid_attributes
+      @search.should_receive(:save).and_return(true)
+      post :create, :search => {:text => 'a_new_search'}
+    end
+    
+    def post_with_invalid_attributes
+      @search.should_receive(:save).and_return(false)
+      post :create
+    end
+    
+    it "builds a new Search from params and assigns it for the view" do
+      Search.should_receive(:new).with("text" => 'a_new_search').and_return(@search)
+      post_with_valid_attributes
+      assigns[:search].should == @search
+    end
+      
+    it "sets flash and redirects to the index action on success" do
+      post_with_valid_attributes
+      flash[:notice].should == 'Search created.'
+      response.should redirect_to(searches_path)
+    end
+    
+    it "sets the flash and renders the new template on failure" do
+      post_with_invalid_attributes
+      response.should render_template(:new)
+    end
+    
   end
 end

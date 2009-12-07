@@ -5,8 +5,17 @@ Feature: Manage searches
 
   Scenario: A user sees the searches index
     Given a search exists with a text of "Product to search for"
-    When I am on the searches_index
-    Then I should see "Product to search for"
+     When I am on the searches index
+     Then I should see "Product to search for"
+  
+  Scenario: A user adds a new search
+    Given I am on the searches index
+     When I follow "New search"
+     Then I fill in "Text" with "a new search"
+      And I press "Submit"
+     Then I should see "Search created."
+      And I should be on the searches index
+  
   
   
   

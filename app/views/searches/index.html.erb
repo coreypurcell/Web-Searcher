@@ -6,10 +6,7 @@
   </tr>
   <% for search in @searches %>
     <tr>
-      <td><%=h search.text %></td>
-      <td><%= link_to "Show", search %></td>
-      <td><%= link_to "Edit", edit_search_path(search) %></td>
-      <td><%= link_to "Destroy", search, :confirm => 'Are you sure?', :method => :delete %></td>
+      <td><%= link_to h(search.text), edit_search_path(search) %></td>
     </tr>
   <% end %>
 </table>

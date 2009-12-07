@@ -1,6 +1,9 @@
 <% title "Edit Search" %>
 
 <%= render :partial => 'form' %>
+<p>
+  <%= button_to "Delete", search_path(@search), :method => :delete %>
+</p>
 
 <p>
   <%= link_to "Show", @search %> |

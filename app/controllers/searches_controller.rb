@@ -6,11 +6,11 @@ class SearchesController < ApplicationController
   # def show
   #   @search = Search.find(params[:id])
   # end
-  # 
+ 
   def new
     @search = Search.new
   end
-  # 
+ 
   def create
     @search = Search.new(params[:search])
     if @search.save
@@ -20,25 +20,25 @@ class SearchesController < ApplicationController
       render :action => 'new'
     end
   end
-  # 
-  # def edit
-  #   @search = Search.find(params[:id])
-  # end
-  # 
-  # def update
-  #   @search = Search.find(params[:id])
-  #   if @search.update_attributes(params[:search])
-  #     flash[:notice] = "Successfully updated search."
-  #     redirect_to @search
-  #   else
-  #     render :action => 'edit'
-  #   end
-  # end
-  # 
-  # def destroy
-  #   @search = Search.find(params[:id])
-  #   @search.destroy
-  #   flash[:notice] = "Successfully destroyed search."
-  #   redirect_to searches_url
-  # end
+ 
+  def edit
+    @search = Search.find(params[:id])
+  end
+  
+  def update
+    @search = Search.find(params[:id])
+    if @search.update_attributes(params[:search])
+      flash[:notice] = "Search updated."
+      redirect_to searches_path
+    else
+      render :action => 'edit'
+    end
+  end
+  
+  def destroy
+    @search = Search.find(params[:id])
+    @search.destroy
+    flash[:notice] = "Search deleted."
+    redirect_to searches_url
+  end
 end

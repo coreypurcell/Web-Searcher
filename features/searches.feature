@@ -15,7 +15,23 @@ Feature: Manage searches
       And I press "Submit"
      Then I should see "Search created."
       And I should be on the searches index
+      
+  Scenario: Update a search
+    Given a search exists with a text of "old search"
+      And I am on the searches index
+     When I follow "old search"
+      And I fill in "Text" with "updated an old search"
+      And I press "Submit"
+     Then I should see "Search updated."
+      And I should see "updated an old search"
   
-  
+  Scenario: Delete a search
+    Given a search exists with a text of "old search"
+      And I am on the searches index
+     When I follow "old search"
+      And I press "Delete"
+     Then I should see "Search deleted."
+      And I should be on the searches index
+      And I should not see "old search"
   
   

@@ -6,3 +6,6 @@ test:
 
 production:
   domain: example.com
+  
+cucumber:
+  domain: test.host

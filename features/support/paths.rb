@@ -10,7 +10,9 @@ module NavigationHelpers
     
     when /the home\s?page/
       '/'
-    
+       
+    when /the searches_index/
+      searches_path
     # Add more mappings here.
     # Here is a more fancy example:
     #

@@ -1,15 +1,14 @@
 <% title "Searches" %>
 
-<table>
-  <tr>
-    <th>Text</th>
-  </tr>
+<ul id="searches">
   <% for search in @searches %>
-    <tr>
-      <td><%= link_to h(search.text), edit_search_path(search) %></td>
-      <td><%= link_to search.site_address, search.site_address %></td>
-    </tr>
+    <% content_tag_for(:li, search) do %>
+      <h2><%= link_to h(search.text), search_path(search) %></h2>
+      <cite><%= link_to search.site_address, search.site_address %></cite>
+      <%= link_to "Edit", edit_search_path(search) %>
+    <% end %>
   <% end %>
-</table>
+</ul>
+
 
 <p><%= link_to "New Search", new_search_path %></p>

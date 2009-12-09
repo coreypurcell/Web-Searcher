@@ -1,9 +1,13 @@
 <% title "Search" %>
 
 <p>
-  <strong>Text:</strong>
-  <%=h @search.text %>
+  <h2><%= h @search.text %></h2>
 </p>
+
+<ul id="results">
+  <%= render :partial => 'result', :collection => @results %>
+</ul>
+
 
 <p>
   <%= link_to "Edit", edit_search_path(@search) %> |

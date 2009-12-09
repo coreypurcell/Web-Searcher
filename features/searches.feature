@@ -19,21 +19,33 @@ Feature: Manage searches
   Scenario: Update a search
     Given a search exists with a text of "old search"
       And I am on the searches index
-     When I follow "old search"
+     When I follow "Edit" within "li.search"
       And I fill in "Text" with "updated an old search"
       And I fill in "Site Address" with "http://arstechnica.com"
       And I press "Submit"
      Then I should see "Search updated."
       And I should see "updated an old search"
-      And I should see "http://arstechnica.com"
-  
+     
   Scenario: Delete a search
     Given a search exists with a text of "old search"
       And I am on the searches index
-     When I follow "old search"
+     When I follow "Edit" within "li.search"
       And I press "Delete"
      Then I should see "Search deleted."
       And I should be on the searches index
       And I should not see "old search"
+  
+  Scenario: A user sees the search results
+    Given a search exists with text: "macbook", site_address: "http://arstechnica.com", id: 1
+      And the following results exists
+          | text      | href                | search_id |
+          | result 1  | http://result1.com  | 1         |
+          | result 2  | http://result2.com  | 1         |
+      And I am on the searches index
+     When I follow "macbook"
+     Then I should see "result 1"
+      And I should see "result 2"
+
+  
   
   

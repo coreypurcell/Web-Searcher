@@ -28,6 +28,25 @@ describe SearchesController do
     
   end
 
+  describe "handling GET show" do
+    before(:each) do
+      @result = mock_model(Result)
+      @results = [@result]
+      add_stubs(@search, :results => @results)
+    end
+    
+    def do_get  
+      get :show, :id => 37
+    end
+    
+    it "should find the search and results and assign them for the view" do
+      Search.should_receive(:find).with("37").and_return(@search)
+      do_get
+      assigns[:search].should == @search
+      assigns[:results].should == @results
+    end
+  end
+
   describe "handling GET new" do
     
     def do_get
@@ -53,7 +72,7 @@ describe SearchesController do
     
     def post_with_valid_attributes
       @search.should_receive(:save).and_return(true)
-      post :create, :search => {:text => 'a_new_search'}
+      post :create, :search => {:text => 'a_new_search', :site_address => 'http://arstechnica.com'}
     end
     
     def post_with_invalid_attributes
@@ -62,7 +81,7 @@ describe SearchesController do
     end
     
     it "builds a new Search from params and assigns it for the view" do
-      Search.should_receive(:new).with("text" => 'a_new_search').and_return(@search)
+      Search.should_receive(:new).with("text" => 'a_new_search', "site_address" => 'http://arstechnica.com').and_return(@search)
       post_with_valid_attributes
       assigns[:search].should == @search
     end
@@ -101,7 +120,7 @@ describe SearchesController do
     
     def put_with_valid_attributes
       @search.should_receive(:update_attributes).and_return(true)
-      put :update, :id => 34, :search => {:description => "an updated search"}
+      put :update, :id => 34, :search => {:text => "an updated search"}
     end
     
     def put_with_invalid_attributes

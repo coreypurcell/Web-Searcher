@@ -12,3 +12,8 @@ task :search => :environment do
     end
   end
 end
+
+desc "Cron task for Heroku"
+task :cron => :environment do
+  Rake::Task["search"].invoke
+end

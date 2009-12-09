@@ -7,6 +7,7 @@
   <% for search in @searches %>
     <tr>
       <td><%= link_to h(search.text), edit_search_path(search) %></td>
+      <td><%= link_to search.site_address, search.site_address %></td>
     </tr>
   <% end %>
 </table>

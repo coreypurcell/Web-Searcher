@@ -11,7 +11,7 @@ Feature: Manage searches
   Scenario: A user adds a new search
     Given I am on the searches index
      When I follow "New search"
-     Then I fill in "Text" with "a new search"
+     Then I fill in "Text" with "a new search"     
       And I press "Submit"
      Then I should see "Search created."
       And I should be on the searches index
@@ -21,9 +21,11 @@ Feature: Manage searches
       And I am on the searches index
      When I follow "old search"
       And I fill in "Text" with "updated an old search"
+      And I fill in "Site Address" with "http://arstechnica.com"
       And I press "Submit"
      Then I should see "Search updated."
       And I should see "updated an old search"
+      And I should see "http://arstechnica.com"
   
   Scenario: Delete a search
     Given a search exists with a text of "old search"

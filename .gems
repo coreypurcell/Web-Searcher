@@ -1,1 +1,2 @@
 exceptional --version '2.0.0'
+mechanize --version '>=0.9.3'

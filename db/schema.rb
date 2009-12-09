@@ -9,12 +9,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091207160341) do
+ActiveRecord::Schema.define(:version => 20091209140024) do
+
+  create_table "results", :force => true do |t|
+    t.string   "href"
+    t.string   "text"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "search_id"
+  end
 
   create_table "searches", :force => true do |t|
     t.text     "text"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "site_address"
   end
 
 end

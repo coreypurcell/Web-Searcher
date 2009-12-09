@@ -1,10 +1,11 @@
 class SearchesController < ApplicationController
+  before_filter :fetch_object, :only => [:show,:edit,:update,:destroy]
+  
   def index
     @searches = Search.all
   end
   
   def show
-    @search = Search.find(params[:id])
     @results = @search.results
   end
  
@@ -23,11 +24,10 @@ class SearchesController < ApplicationController
   end
  
   def edit
-    @search = Search.find(params[:id])
+
   end
   
   def update
-    @search = Search.find(params[:id])
     if @search.update_attributes(params[:search])
       flash[:notice] = "Search updated."
       redirect_to searches_path
@@ -36,10 +36,16 @@ class SearchesController < ApplicationController
     end
   end
   
-  def destroy
-    @search = Search.find(params[:id])
+  def destroy    
     @search.destroy
     flash[:notice] = "Search deleted."
     redirect_to searches_url
   end
+  
+  private
+  
+  def fetch_object
+    @search = Search.find(params[:id])
+  end
+  
 end

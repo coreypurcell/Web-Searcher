@@ -2,6 +2,7 @@
 
 <p>
   <h2><%= h @search.text %></h2>
+  <%= @results.first.created_at.to_s(:long) %>
 </p>
 
 <ul id="results">

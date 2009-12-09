@@ -7,6 +7,10 @@ class SearchesController < ApplicationController
   
   def show
     @results = @search.results
+    respond_to do |wants|
+      wants.html #index.html.erb
+      wants.atom
+    end
   end
  
   def new

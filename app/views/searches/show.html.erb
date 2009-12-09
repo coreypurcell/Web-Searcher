@@ -1,5 +1,7 @@
 <% title "Search" %>
 
+<%= link_to "RSS Feed", search_path(@search) + ".atom" %>
+
 <p>
   <h2><%= h @search.text %></h2>
   <%= @results.first ? @results.first.created_at.to_s(:long) : "" %>

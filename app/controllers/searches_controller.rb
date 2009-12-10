@@ -1,5 +1,5 @@
 class SearchesController < ApplicationController
-  before_filter :fetch_object, :only => [:show,:edit,:update,:destroy]
+  before_filter :fetch_object, :only => [:show,:edit,:update,:destroy,:refresh]
   
   def index
     @searches = Search.all
@@ -46,6 +46,11 @@ class SearchesController < ApplicationController
     redirect_to searches_url
   end
   
+  def refresh
+    @search.refresh
+    flash[:notice] = "Results refreshed."
+    redirect_to @search
+  end
   private
   
   def fetch_object

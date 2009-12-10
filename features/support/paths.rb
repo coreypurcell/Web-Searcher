@@ -13,6 +13,8 @@ module NavigationHelpers
        
     when /the searches index/
       searches_path
+    when /the search page for "([^\"]*)"/
+      search_path(Search.find_by_text($1))
     # Add more mappings here.
     # Here is a more fancy example:
     #

@@ -3,3 +3,4 @@ Factory.factories.each do |name, factory|
     Factory(name, attr.gsub(' ', '_') => value)
   end
 end
+

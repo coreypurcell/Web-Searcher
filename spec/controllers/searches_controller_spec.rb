@@ -171,4 +171,32 @@ describe SearchesController do
       flash[:notice].should == "Search deleted."
     end
   end
+
+  describe "handling GET refresh" do
+    before(:each) do
+      @search.stub!(:refresh).and_return(true)
+    end
+    
+    def do_get
+      get :refresh, :id => 35    
+    end
+    
+    it "finds the specified search and assigns it for the view" do
+      Search.should_receive(:find).with("35").and_return(@search)
+      do_get
+      assigns[:search].should == @search
+    end
+    
+    it "refreshes the search results" do
+      @search.should_receive(:refresh)
+      do_get
+    end
+    
+    it "sets the flash and redirects to the show page" do
+      do_get
+      flash[:notice].should == "Results refreshed."
+      response.should redirect_to(search_path(@search))
+    end
+    
+  end
 end

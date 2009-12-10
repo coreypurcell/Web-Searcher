@@ -30,3 +30,5 @@ config.gem "rspec",            :lib => false
 config.gem "rspec-rails",      :lib => false
 config.gem 'remarkable_rails', :lib => false, :version => '>= 3.1.10'
 config.gem "pickle", :lib => false, :version => ">= 0.1.21"  
+
+config.gem "thoughtbot-factory_girl", :lib => 'factory_girl'

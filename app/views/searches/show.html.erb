@@ -1,5 +1,7 @@
 <% title "Search" %>
 
+<%= link_to "Refresh", refresh_search_path(@search) %>
+
 <%= link_to "RSS Feed", search_path(@search) + ".atom" %>
 
 <p>

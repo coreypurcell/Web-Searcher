@@ -32,7 +32,7 @@ describe SearchesController do
     before(:each) do
       @result = mock_model(Result)
       @results = [@result]
-      add_stubs(@search, :results => @results)
+      @search.stub!(:results => @results)
     end
     
     def do_get  

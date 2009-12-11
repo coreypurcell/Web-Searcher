@@ -16,11 +16,6 @@ describe Search do
       WWW::Mechanize.stub!(:new).and_return(@agent)
       @agent.stub!(:page).and_return(@page)
     end
-    it "destroys all previous results for that search" do
-      @search.results = [Factory.create(:result), Factory.create(:result)]
-      @search.results.should_receive(:destroy_all)
-      @search.refresh
-    end
     it "gets fetches the page in the site_address" do
       WWW::Mechanize.should_receive(:new).and_return(@agent)
       @agent.should_receive(:get).with("http://google.com")
@@ -30,14 +25,21 @@ describe Search do
       @page.should_receive(:links_with).with(:text => /Searchtext/i).and_return(@page.links_with)
       @search.refresh
     end
-    it "creates a result for each matching link" do
+    it "creates a result for each matching link if it doesn't exist" do
       @page.links_with.each do |link|
-        @search.results.should_receive(:create!).with(hash_including({
+        @search.results.should_receive(:find_or_create_by_href).with(@page.uri + link.href, hash_including({
           :text => link.text,
           :href => @page.uri + link.href
         }))
       end
       @search.refresh
+    end
+    
+    it "sets the refreshed_at time to now" do
+      Time.stub!(:now).and_return(Time.parse("December 25, 2009 12:00"))
+      @search.refreshed_at = Time.parse("December 1, 2009 12:00")
+      @search.refresh
+      @search.refreshed_at.should == Time.parse("December 25, 2009 12:00")
     end
   end
 end

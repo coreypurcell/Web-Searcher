@@ -47,7 +47,7 @@ Feature: Manage searches
       And I should see "result 2"
 
    Scenario: A user presses refresh to see new results
-    Given a search exists with text: "macbook", site_address: "http://arstechnica.com", id: 1
+    Given a search exists with text: "macbook", site_address: "http://arstechnica.com", id: 1, refreshed_at: "09 Jul 2009 13:28"
       And the following results exists
           | text      | href                | search_id | created_at        |
           | result 1  | http://result1.com  | 1         | 09 Jul 2009 13:28 |

@@ -43,3 +43,16 @@ describe Search do
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: searches
+#
+#  id           :integer         not null, primary key
+#  text         :text
+#  created_at   :datetime
+#  updated_at   :datetime
+#  site_address :string(255)
+#  refreshed_at :datetime
+#
+

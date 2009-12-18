@@ -1,5 +1,5 @@
 class Result < ActiveRecord::Base
-  belongs_to :search
+  belongs_to :search, :autosave => true
 end
 
 # == Schema Information

@@ -7,11 +7,11 @@ describe Search do
     
   describe "refresh" do
     before(:each) do
-      @search = Search.create(:text => "Searchtext", :site_address => "http://google.com")
-      @page = mock("page", :uri => "http://google.com",
-                            :links_with => [
-                              mock("link", :text => "Link 1", :href => "href 1" ),
-                              mock("link", :text => "Link 2", :href => "href 2" )])
+      @search = Search.create(:text => "Link", :site_address => "http://google.com")
+      @page = mock("page", :uri => "http://google.com")
+      @links =[ mock("link", :text => "Link 1", :href => "href 1" ),
+                mock("link", :text => "Link 2", :href => "href 2" )] 
+      @page.stub!(:links_with).with(hash_including(:text => /Link/i)).and_return(@links)
       @agent = mock("agent", :get => @page)
       WWW::Mechanize.stub!(:new).and_return(@agent)
       @agent.stub!(:page).and_return(@page)
@@ -22,24 +22,32 @@ describe Search do
       @search.refresh
     end
     it "finds all links that match the expression in text attribute" do
-      @page.should_receive(:links_with).with(:text => /Searchtext/i).and_return(@page.links_with)
+      @page.should_receive(:links_with).with(:text => /Link/i)
       @search.refresh
     end
     it "creates a result for each matching link if it doesn't exist" do
-      @page.links_with.each do |link|
-        @search.results.should_receive(:find_or_create_by_href).with(@page.uri + link.href, hash_including({
-          :text => link.text,
-          :href => @page.uri + link.href
-        }))
-      end
+      @search.results.size.should == 0
       @search.refresh
+      @search.reload
+      @search.results.size.should == 2  
+    end
+    
+    it "updates all links\' updated_at to now" do
+      Time.stub!(:now).and_return(Time.parse("December 25, 2009 12:00"))      
+      @search.results.create!(:text => "Link 1", :href => "href 1", :updated_at  => Time.parse("December 1, 2009 12:00"))
+      p Result.all
+      @search.refresh
+      @search.reload
+      p Result.all
+      Result.find_by_href("href 1").updated_at.should > Time.parse("December 1, 2009 12:00")
+      
     end
     
     it "sets the refreshed_at time to now" do
       Time.stub!(:now).and_return(Time.parse("December 25, 2009 12:00"))
       @search.refreshed_at = Time.parse("December 1, 2009 12:00")
       @search.refresh
-      @search.refreshed_at.should == Time.parse("December 25, 2009 12:00")
+      @search.reload.refreshed_at.should == Time.parse("December 25, 2009 12:00")
     end
   end
 end
